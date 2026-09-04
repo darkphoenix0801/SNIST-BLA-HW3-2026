@@ -1,7 +1,8 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, UploadFile, File, Form
 from pydantic import BaseModel
 from backend.agents.orchestrator import InterviewOrchestrator
 from backend.services.interview_service import generate_interview_question, evaluate_interview_answer
+from backend.services.audio_service import transcribe_audio, extract_audio_features
 import backend.services.memory_service as memory_service
 
 router = APIRouter(
@@ -52,6 +53,44 @@ async def evaluate_answer(submission: AnswerSubmission):
         return {
             "status": "success",
             "evaluation": evaluation
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/evaluate_audio")
+async def evaluate_audio_answer(
+    student_id: int = Form(...),
+    question: str = Form(...),
+    current_difficulty: str = Form(...),
+    file: UploadFile = File(...)
+):
+    """
+    Evaluates a student's voice answer. Transcribes audio, extracts features, and evaluates content.
+    """
+    try:
+        content = await file.read()
+        
+        # 1. Transcribe Audio
+        transcript = await transcribe_audio(content, file.filename)
+        if not transcript:
+            raise HTTPException(status_code=400, detail="Could not transcribe audio.")
+            
+        # 2. Extract audio features (pace, pauses, etc.)
+        audio_features = extract_audio_features(content)
+        
+        # 3. Evaluate the textual transcript
+        evaluation = await evaluate_interview_answer(question, transcript)
+        
+        # Combine multi-modal evaluation
+        combined_result = {
+            "transcript": transcript,
+            "content_evaluation": evaluation,
+            "audio_analysis": audio_features
+        }
+        
+        return {
+            "status": "success",
+            "evaluation": combined_result
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
