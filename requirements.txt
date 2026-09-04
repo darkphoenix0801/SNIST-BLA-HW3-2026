@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+pdfplumber
+python-docx
+python-dotenv
+openai
+httpx
+pydantic
