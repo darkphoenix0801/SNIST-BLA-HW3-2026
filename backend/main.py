@@ -1,7 +1,7 @@
 import os
 from fastapi import FastAPI
 from dotenv import load_dotenv
-from routers import resume
+from backend.routers import resume, interview
 
 # Load environment variables
 load_dotenv()
@@ -30,3 +30,5 @@ async def health_check():
 
 # Include routers
 app.include_router(resume.router)
+app.include_router(interview.router)
+
