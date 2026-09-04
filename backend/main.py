@@ -1,6 +1,7 @@
 import os
 from fastapi import FastAPI
 from dotenv import load_dotenv
+from routers import resume
 
 # Load environment variables
 load_dotenv()
@@ -26,3 +27,6 @@ async def root():
 @app.get("/health")
 async def health_check():
     return {"status": "ok"}
+
+# Include routers
+app.include_router(resume.router)
