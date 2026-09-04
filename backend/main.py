@@ -3,6 +3,8 @@ from fastapi import FastAPI
 from dotenv import load_dotenv
 from backend.routers import resume, interview
 
+from fastapi.middleware.cors import CORSMiddleware
+
 # Load environment variables
 load_dotenv()
 
@@ -10,6 +12,15 @@ app = FastAPI(
     title="PADO - Placement Assessment and Development Orchestrator",
     description="Backend API for the PADO Agentic Placement Coach",
     version="1.0.0"
+)
+
+# Enable CORS for the Streamlit frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Example featherless configuration check (for demonstration)
