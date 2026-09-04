@@ -30,6 +30,7 @@ Thumbs.db
 # Logs and databases
 *.log
 *.sqlite3
+pado.db
 
 # Node/Frontend
 node_modules/
