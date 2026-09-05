@@ -1,39 +1,13 @@
-# Environments
-.env
-.venv
-env/
 venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Byte-compiled / optimized / DLL files
+.venv/
 __pycache__/
-*.py[cod]
-*$py.class
-
-# IDEs and Editors
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS generated files
+*.pyc
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# Logs and databases
-*.log
-*.sqlite3
+pado-web/.next/
+pado-web/node_modules/
+*.wav
+*.mp3
+.tempmediaStorage/
+db.sqlite3
 pado.db
-
-# Node/Frontend
-node_modules/
-dist/
-build/
-.next/
+.env
